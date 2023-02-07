@@ -22,8 +22,24 @@ type Fingerprints struct {
 
 func init_fingerprint() []Fingerprints {
 	fingerprints := []Fingerprints{
+		Fingerprints{Service: "Feedpress", Cname: []string{}, Fingerprint: []string{"The feed has not been found."}, Nxdomain: false, Must_match_cname: false},
+		Fingerprints{Service: "Flywheel", Cname: []string{}, Fingerprint: []string{"We're sorry, you've landed on a page that is hosted by Flywheel"}, Nxdomain: false, Must_match_cname: false},
+		Fingerprints{Service: "easyredir", Cname: []string{}, Fingerprint: []string{"www.easyredircdn.com/pages/v2/404-host-not-found.html"}, Nxdomain: true, Must_match_cname: false},
+		Fingerprints{Service: "Worksites", Cname: []string{}, Fingerprint: []string{"Hello! Sorry, but the website you&rsquo;re looking for doesn&rsquo;t exist."}, Nxdomain: false, Must_match_cname: false},
+		Fingerprints{Service: "webflow", Cname: []string{"webflow.com"}, Fingerprint: []string{"Page not found"}, Nxdomain: false, Must_match_cname: true},
+		Fingerprints{Service: "uptimerobot", Cname: []string{"stats.uptimerobot.com"}, Fingerprint: []string{"page not found"}, Nxdomain: false, Must_match_cname: true},
+		Fingerprints{Service: "tilda", Cname: []string{}, Fingerprint: []string{"Please go to the site settings and put the domain name in the Domain tab."}, Nxdomain: false, Must_match_cname: false},
+		Fingerprints{Service: "SurveySparrow", Cname: []string{"surveysparrow.com"}, Fingerprint: []string{"Account not found."}, Nxdomain: false, Must_match_cname: true},
+		Fingerprints{Service: "Strikingly", Cname: []string{"strikinglydns.com"}, Fingerprint: []string{"PAGE NOT FOUND"}, Nxdomain: false, Must_match_cname: true},
+		Fingerprints{Service: "SmartJobBoard", Cname: []string{}, Fingerprint: []string{"This job board website is either expired or its domain name is invalid."}, Nxdomain: false, Must_match_cname: false},
+		Fingerprints{Service: "Short.io", Cname: []string{}, Fingerprint: []string{}, Nxdomain: false, Must_match_cname: false},
+		Fingerprints{Service: "Readthedocs", Cname: []string{"readthedocs.io"}, Fingerprint: []string{"is unknown to Read the Docs"}, Nxdomain: false, Must_match_cname: true},
+		Fingerprints{Service: "Readme.io", Cname: []string{"readme.io", "readmessl.com"}, Fingerprint: []string{"<h1>Not Yet Active</h1>", "Project doesnt exist... yet!"}, Nxdomain: false, Must_match_cname: false},
+		Fingerprints{Service: "Pingdom", Cname: []string{"pingdom.com"}, Fingerprint: []string{">Public Report Not Activated</", "Sorry, couldn't find the status page"}, Nxdomain: false, Must_match_cname: false},
+		Fingerprints{Service: "Pantheon", Cname: []string{}, Fingerprint: []string{"404 error unknown site!"}, Nxdomain: false, Must_match_cname: false},
+		Fingerprints{Service: "Ngrok", Cname: []string{}, Fingerprint: []string{".ngrok.io not found"}, Nxdomain: false, Must_match_cname: false},
+		Fingerprints{Service: "netlify", Cname: []string{"netlify.app", "netlify.com", "netlifyglobalcdn.com"}, Fingerprint: []string{"Not Found - Request ID:"}, Nxdomain: false, Must_match_cname: true},
 		Fingerprints{Service: "LaunchRock", Cname: []string{"example.launchrock.com"}, Fingerprint: []string{"It looks like you may have taken a wrong turn somewhere. Don't worry...it happens to all of us."}, Nxdomain: false, Must_match_cname: false},
-
 		Fingerprints{Service: "Helprace", Cname: []string{}, Fingerprint: []string{"Admin of this Helprace account needs to set up domain alias"}, Nxdomain: false, Must_match_cname: false},
 		Fingerprints{Service: "Help Scout", Cname: []string{"helpscoutdocs.com"}, Fingerprint: []string{"No settings were found for this company:"}, Nxdomain: false, Must_match_cname: true},
 		Fingerprints{Service: "Help Juice", Cname: []string{"helpjuice.com"}, Fingerprint: []string{"We could not find what you're looking for."}, Nxdomain: false, Must_match_cname: true},
@@ -40,15 +56,15 @@ func init_fingerprint() []Fingerprints {
 		Fingerprints{Service: "fastly", Cname: []string{"fastly"}, Fingerprint: []string{"Fastly error: unknown domain"}, Nxdomain: false, Must_match_cname: false},
 		Fingerprints{Service: "github", Cname: []string{"github.io"}, Fingerprint: []string{"There isn't a GitHub Pages site here."}, Nxdomain: false, Must_match_cname: false},
 		Fingerprints{Service: "heroku", Cname: []string{"herokuapp"}, Fingerprint: []string{"herokucdn.com/error-pages/no-such-app.html"}, Nxdomain: false, Must_match_cname: false},
-		Fingerprints{Service: "pantheon", Cname: []string{"pantheonsite.io"}, Fingerprint: []string{"The gods are wise, but do not know of the site which you seek."}, Nxdomain: false, Must_match_cname: false},
+		Fingerprints{Service: "pantheon", Cname: []string{"pantheonsite.io"}, Fingerprint: []string{"404 error unknown site!", "The gods are wise, but do not know of the site which you seek."}, Nxdomain: false, Must_match_cname: false},
 		Fingerprints{Service: "tumblr", Cname: []string{"domains.tumblr.com"}, Fingerprint: []string{"Whatever you were looking for doesn't currently exist at this address."}, Nxdomain: false, Must_match_cname: false},
-		Fingerprints{Service: "wordpress", Cname: []string{"wordpress.com"}, Fingerprint: []string{"Do you want to register"}, Nxdomain: false, Must_match_cname: false},
+		Fingerprints{Service: "wordpress", Cname: []string{"wordpress.com"}, Fingerprint: []string{"Do you want to register"}, Nxdomain: false, Must_match_cname: true},
 		Fingerprints{Service: "teamwork", Cname: []string{"teamwork.com"}, Fingerprint: []string{"Oops - We didn't find your site."}, Nxdomain: false, Must_match_cname: false},
 		Fingerprints{Service: "s3 bucket", Cname: []string{"amazonaws"}, Fingerprint: []string{"The specified bucket does not exist"}, Nxdomain: false, Must_match_cname: false},
 		Fingerprints{Service: "ghost", Cname: []string{"ghost.io"}, Fingerprint: []string{"The thing you were looking for is no longer here, or never was"}, Nxdomain: false, Must_match_cname: false},
 		Fingerprints{Service: "shopify", Cname: []string{"myshopify.com"}, Fingerprint: []string{"Sorry, this shop is currently unavailable."}, Nxdomain: false, Must_match_cname: false},
 		Fingerprints{Service: "uservoice", Cname: []string{"uservoice.com"}, Fingerprint: []string{"This UserVoice subdomain is currently available!"}, Nxdomain: false, Must_match_cname: false},
-		Fingerprints{Service: "surge", Cname: []string{"surge.sh"}, Fingerprint: []string{"project not found"}, Nxdomain: false, Must_match_cname: false},
+		Fingerprints{Service: "surge", Cname: []string{"surge.sh"}, Fingerprint: []string{"project not found"}, Nxdomain: false, Must_match_cname: true},
 		Fingerprints{Service: "bitbucket", Cname: []string{"bitbucket.io"}, Fingerprint: []string{"Repository not found"}, Nxdomain: false, Must_match_cname: true},
 		Fingerprints{Service: "intercom", Cname: []string{"custom.intercom.help"}, Fingerprint: []string{"This page is reserved for artistic dogs.", "Uh oh. That page doesn't exist.</h1>"}, Nxdomain: false, Must_match_cname: false},
 		Fingerprints{Service: "webflow", Cname: []string{"proxy.webflow.com", "proxy-ssl.webflow.com"}, Fingerprint: []string{"<p class=\"description\">The page you are looking for doesn't exist or has been moved.</p>"}, Nxdomain: false, Must_match_cname: false},
@@ -170,7 +186,10 @@ func Runner(domain string) map[string]string {
 	if cname != "" && len(cname) < 5 {
 		return res
 	}
-	body, _ := HttpGet(domain)
+	body, err := HttpGet(domain)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
 	fmt.Println(body)
 	nx := NXDomain(cname)
 	fingerprints := init_fingerprint()
@@ -208,7 +227,7 @@ func Runner(domain string) map[string]string {
 		}
 
 		for n := range fingerprints[f].Fingerprint {
-			if strings.Contains(body, fingerprints[f].Fingerprint[n]) {
+			if strings.Contains(strings.ToLower(body), strings.ToLower(fingerprints[f].Fingerprint[n])) {
 				if fingerprints[f].Must_match_cname {
 					cflag := false
 					for _, c := range fingerprints[f].Cname {
