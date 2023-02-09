@@ -118,6 +118,7 @@ var nsFingerprints = map[string]*regexp.Regexp{
 }
 
 func HttpGet(domain string) (string, error) {
+	var body []byte
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 	}
@@ -128,19 +129,18 @@ func HttpGet(domain string) (string, error) {
 	resp, err := client.Get("http://" + domain)
 	if err != nil {
 		fmt.Println("http error:", err)
-		if strings.Contains(err.Error(), "Client.Timeout exceeded") {
-			resp, err = client.Get("https://" + domain)
-			if err != nil {
-				fmt.Println("https error:", err)
-				return "", err
-			}
-		} else {
+		resp, err = client.Get("https://" + domain)
+		if err != nil {
+			fmt.Println("https error:", err)
 			return "", err
+		} else {
+			body, err = ioutil.ReadAll(resp.Body)
+			return string(body), nil
 		}
 
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err = ioutil.ReadAll(resp.Body)
 	return string(body), nil
 
 }
