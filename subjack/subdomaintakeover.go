@@ -271,6 +271,7 @@ func CheckNameServer(domain string) map[string]string {
 				res["service"] = name
 				res["nameserver"] = ns
 				res["domain"] = domain
+				res["type"] = "nameserver_with_fingerprint"
 				return res
 			}
 		}
