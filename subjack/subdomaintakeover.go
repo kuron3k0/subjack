@@ -352,7 +352,7 @@ func Runner(domain string) map[string]string {
 						}
 					}
 					if !cflag {
-						return res
+						continue
 					}
 				}
 				service := strings.ToUpper(fingerprints[f].Service)
