@@ -186,65 +186,6 @@ func RecursionResolveNS(domain string) []string {
 	return result_nameservers
 }
 
-func ResolveCname(domain string) (cname string) {
-	ns := "8.8.8.8:53"
-	url := domain
-	cname = ""
-	d := new(dns.Msg)
-	flag := false
-	for {
-		flag = false
-		if strings.HasSuffix(url, ".") {
-			url = url[:len(url)-1]
-		}
-		d.SetQuestion(dns.Fqdn(url), dns.TypeCNAME)
-		ret, err := dns.Exchange(d, ns)
-
-		resolved := true
-		if err != nil {
-			resolved = false
-			fmt.Println(err)
-			if strings.Contains(err.Error(), "i/o timeout") {
-				content, _ := ioutil.ReadFile("/etc/resolv.conf")
-				for _, line := range strings.Split(string(content), "\n") {
-					if strings.HasPrefix(line, "nameserver") {
-						ret, err = dns.Exchange(d, strings.Trim(line[10:], "\t ")+":53")
-						if err != nil {
-							fmt.Println(err)
-							continue
-						} else {
-							resolved = true
-						}
-					}
-				}
-			}
-
-		}
-
-		if !resolved || ret == nil {
-			return cname
-		}
-
-		for _, a := range ret.Answer {
-			if t, ok := a.(*dns.CNAME); ok {
-				flag = true
-				cname = t.Target
-				url = t.Target
-				//fmt.Println("cname: " + cname)
-			}
-		}
-
-		if !flag {
-			if strings.HasSuffix(cname, ".") {
-				cname = cname[:len(cname)-1]
-			}
-
-			return cname
-		}
-	}
-
-}
-
 func DomainResolveStatus(domain string) int8 {
 	if _, err := net.LookupHost(domain); err != nil {
 		switch e := err.(type) {
@@ -290,7 +231,7 @@ func CheckNameServer(domain string) map[string]string {
 
 func Runner(domain string) map[string]string {
 	res := make(map[string]string)
-	cname := ResolveCname(domain)
+	cname, _ := net.LookupCNAME(domain)
 	if cname != "" && len(cname) < 5 {
 		return res
 	}
