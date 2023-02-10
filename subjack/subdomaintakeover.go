@@ -221,7 +221,7 @@ func ResolveCname(domain string) (cname string) {
 
 		}
 
-		if !resolved {
+		if !resolved || ret == nil {
 			return cname
 		}
 
