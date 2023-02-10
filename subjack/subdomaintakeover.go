@@ -31,7 +31,7 @@ var fingerprints = []Fingerprints{
 	Fingerprints{Service: "softr.io", Cname: []string{}, Fingerprint: []string{"The application you were looking for was built on Softr, <br>"}, Nxdomain: false, Must_match_cname: false},
 	Fingerprints{Service: "Feedpress", Cname: []string{}, Fingerprint: []string{"The feed has not been found."}, Nxdomain: false, Must_match_cname: false},
 	Fingerprints{Service: "Flywheel", Cname: []string{}, Fingerprint: []string{"We're sorry, you've landed on a page that is hosted by Flywheel"}, Nxdomain: false, Must_match_cname: false},
-	Fingerprints{Service: "easyredir", Cname: []string{}, Fingerprint: []string{"www.easyredircdn.com/pages/v2/404-host-not-found.html"}, Nxdomain: true, Must_match_cname: false},
+	Fingerprints{Service: "easyredir", Cname: []string{}, Fingerprint: []string{"www.easyredircdn.com/pages/v2/404-host-not-found.html"}, Nxdomain: false, Must_match_cname: false},
 	Fingerprints{Service: "Worksites", Cname: []string{}, Fingerprint: []string{"Hello! Sorry, but the website you&rsquo;re looking for doesn&rsquo;t exist."}, Nxdomain: false, Must_match_cname: false},
 	Fingerprints{Service: "webflow", Cname: []string{"webflow.com"}, Fingerprint: []string{"Page not found"}, Nxdomain: false, Must_match_cname: true},
 	Fingerprints{Service: "uptimerobot", Cname: []string{"stats.uptimerobot.com"}, Fingerprint: []string{"page not found"}, Nxdomain: false, Must_match_cname: true},
@@ -67,7 +67,7 @@ var fingerprints = []Fingerprints{
 	Fingerprints{Service: "tumblr", Cname: []string{"domains.tumblr.com"}, Fingerprint: []string{"Whatever you were looking for doesn't currently exist at this address."}, Nxdomain: false, Must_match_cname: false},
 	Fingerprints{Service: "wordpress", Cname: []string{"wordpress.com"}, Fingerprint: []string{"Do you want to register"}, Nxdomain: false, Must_match_cname: true},
 	Fingerprints{Service: "teamwork", Cname: []string{"teamwork.com"}, Fingerprint: []string{"Oops - We didn't find your site."}, Nxdomain: false, Must_match_cname: false},
-	Fingerprints{Service: "s3 bucket", Cname: []string{"amazonaws"}, Fingerprint: []string{"The specified bucket does not exist"}, Nxdomain: false, Must_match_cname: false},
+	Fingerprints{Service: "s3 bucket", Cname: []string{"amazonaws"}, Fingerprint: []string{"<Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message>", "<li>Message: The specified bucket does not exist</li>"}, Nxdomain: false, Must_match_cname: false},
 	Fingerprints{Service: "ghost", Cname: []string{"ghost.io"}, Fingerprint: []string{"The thing you were looking for is no longer here, or never was"}, Nxdomain: false, Must_match_cname: false},
 	Fingerprints{Service: "shopify", Cname: []string{"myshopify.com"}, Fingerprint: []string{"Sorry, this shop is currently unavailable."}, Nxdomain: false, Must_match_cname: false},
 	Fingerprints{Service: "uservoice", Cname: []string{"uservoice.com"}, Fingerprint: []string{"This UserVoice subdomain is currently available!"}, Nxdomain: false, Must_match_cname: false},
@@ -200,7 +200,9 @@ func ResolveCname(domain string) (cname string) {
 		d.SetQuestion(dns.Fqdn(url), dns.TypeCNAME)
 		ret, err := dns.Exchange(d, ns)
 
+		resolved := true
 		if err != nil {
+			resolved = false
 			fmt.Println(err)
 			if strings.Contains(err.Error(), "i/o timeout") {
 				content, _ := ioutil.ReadFile("/etc/resolv.conf")
@@ -210,12 +212,17 @@ func ResolveCname(domain string) (cname string) {
 						if err != nil {
 							fmt.Println(err)
 							continue
+						} else {
+							resolved = true
 						}
-						ns = strings.Trim(line[10:], "\t ") + ":53"
 					}
 				}
 			}
 
+		}
+
+		if !resolved {
+			return cname
 		}
 
 		for _, a := range ret.Answer {
