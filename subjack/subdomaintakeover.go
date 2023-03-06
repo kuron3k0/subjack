@@ -278,6 +278,7 @@ func Runner(domain string) map[string]string {
 
 		for n := range fingerprints[f].Fingerprint {
 			if strings.Contains(strings.ToLower(body), strings.ToLower(fingerprints[f].Fingerprint[n])) {
+				fmt.Println(body)
 				if fingerprints[f].Must_match_cname {
 					cflag := false
 					for _, c := range fingerprints[f].Cname {
