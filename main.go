@@ -5,15 +5,19 @@ import (
 	"fmt"
 	"io/ioutil"
 	"strings"
-	"subjack/subjack"
+	"github.com/kuron3k0/subjack/subjack"
+	"encoding/json"
+	"net/http"
 	"sync"
 )
 
 func main() {
 	var domain string
 	var file string
+	var webhook string
 	flag.StringVar(&domain, "d", "", "domain to check")
 	flag.StringVar(&file, "f", "", "file contain domains")
+	flag.StringVar(&webhook, "wh", "", "webhook url to post result")
 	flag.Parse()
 	if domain != "" {
 		fmt.Println(subjack.Runner(domain))
@@ -33,7 +37,7 @@ func main() {
 			go func(d string) {
 				defer wg.Done()
 				ret := subjack.Runner(d)
-				if len(ret["type"]) > 0 {
+				if len(ret["type"]) > 0 && ret["type"] != "nxdomain_cannot_register_with_no_fingerprint"{
 					result <- ret
 				}
 				<-ch
@@ -42,9 +46,27 @@ func main() {
 		wg.Wait()
 
 		close(result)
+		list := make([]map[string]string, len(result))
 		for r := range result {
-			fmt.Println(r)
+			append(list, r)
 		}
+		if webhook != "" {
+			b, _ := json.Marshal(list)
+			resp, err := http.Post(url,
+				"application/json",
+				bytes.NewBuffer(b))
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+			defer resp.Body.Close()
+			body, _ := ioutil.ReadAll(resp.Body)
+			fmt.Println(string(body))
+			return
+		}else{
+			fmt.Println(list)
+		}
+
 	}
 
 }
