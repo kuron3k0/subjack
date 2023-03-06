@@ -52,7 +52,7 @@ func main() {
 		}
 		if webhook != "" {
 			b, _ := json.Marshal(list)
-			resp, err := http.Post(url,
+			resp, err := http.Post(webhook,
 				"application/json",
 				bytes.NewBuffer(b))
 			if err != nil {
